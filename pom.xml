@@ -2,15 +2,22 @@
   <parent>
     <artifactId>freehep-maven-plugins</artifactId>
     <groupId>org.freehep</groupId>
-    <version>1.9-SNAPSHOT</version>
+    <version>2.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.freehep</groupId>
   <artifactId>freehep-chartableconverter-plugin</artifactId>
   <packaging>maven-plugin</packaging>
   <name>FreeHEP Character Table Converter</name>
-  <version>1.9-SNAPSHOT</version>
+  <version>2.0-SNAPSHOT</version>
   <description>Converts 16 bit Unicode text files into lookup tables.</description>
+  <repositories>
+    <repository>
+      <id>freehep-maven</id>
+      <name>Maven FreeHEP</name>
+      <url>http://java.freehep.org/maven2</url>
+    </repository>
+  </repositories>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
