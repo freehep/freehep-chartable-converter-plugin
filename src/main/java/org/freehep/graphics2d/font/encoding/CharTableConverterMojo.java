@@ -1,13 +1,12 @@
 // Copyright FreeHEP, 2005.
 package org.freehep.graphics2d.font.encoding;
 
-import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
-
 import org.codehaus.plexus.util.FileUtils;
 
 /**
@@ -15,7 +14,7 @@ import org.codehaus.plexus.util.FileUtils;
  * @description Generates lookup tables from 16 bit Unicode text files.
  * @phase generate-sources
  * @author <a href="Mark.Donszelmann@slac.stanford.edu">Mark Donszelmann</a>
- * @version $Id: src/main/java/org/freehep/graphics2d/font/encoding/CharTableConverterMojo.java 47c7cda628f7 2005/11/18 06:31:36 duns $
+ * @version $Id: src/main/java/org/freehep/graphics2d/font/encoding/CharTableConverterMojo.java 83c4409af7b0 2005/11/19 07:52:18 duns $
  */
 public class CharTableConverterMojo extends AbstractMojo {
 
