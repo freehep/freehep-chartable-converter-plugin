@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
  * Usage java CharTableConverter encoding.unicode.txt [encoding type]
  *
  * @author Sami Kama
- * @version $Id: src/main/java/org/freehep/graphics2d/font/encoding/CharTableConverter.java 47c7cda628f7 2005/11/18 06:31:36 duns $
+ * @version $Id: src/main/java/org/freehep/graphics2d/font/encoding/CharTableConverter.java f21547d41a73 2005/12/02 00:39:35 duns $
  */
 public class CharTableConverter {
     private BufferedReader textFile = null;
@@ -28,7 +28,7 @@ public class CharTableConverter {
 		javaOut.println(" * Generated "+className+" Encoding Table.");
 		javaOut.println(" *");
 		javaOut.println(" * @author org.freehep.graphics2d.font.CharTableConverter");
-		javaOut.println(" * @version $Id: src/main/java/org/freehep/graphics2d/font/encoding/CharTableConverter.java 47c7cda628f7 2005/11/18 06:31:36 duns $");		
+		javaOut.println(" * @version $Id: src/main/java/org/freehep/graphics2d/font/encoding/CharTableConverter.java f21547d41a73 2005/12/02 00:39:35 duns $");		
 		javaOut.println(" */");
 		javaOut.println("public class "+className+" extends AbstractCharTable {");
 		javaOut.println("\tprivate Hashtable unicodeToName = new Hashtable();");
@@ -38,7 +38,7 @@ public class CharTableConverter {
 		javaOut.println("\tpublic "+className+"() {");
 	}
 
-	public void putMethods(String encoding, String className) throws Exception {
+	public void putMethods(String encoding, String tableName) throws Exception {
 
 	        /*
 	        javaOut.println("\tpublic String toName(char c){");
@@ -71,7 +71,7 @@ public class CharTableConverter {
 		javaOut.println("\t}");
 		javaOut.println();
 		javaOut.println("\tpublic String getName(){");
-		javaOut.println("\treturn(\""+className+"\");");
+		javaOut.println("\treturn(\""+tableName+"\");");
 		javaOut.println("\t}");
 		javaOut.println();
 		javaOut.println("\tpublic String getEncoding(){");
@@ -180,20 +180,26 @@ public class CharTableConverter {
 			System.err.println("Usage: CharTableConverter destdir package txtfile [Encoding type]");
 			System.exit(0);
 		}
-		CharTableConverter ht = new CharTableConverter();
-		File in = new File(args[2]);
+		CharTableConverter converter = new CharTableConverter();
+		
+		File src = new File(args[2]);
+		
 		String encoding = (args.length==4) ? args[3] : "";
-		String className = in.getName();
-		int dot = className.indexOf(".");
-		if (dot >= 0) className = className.substring(0,dot);
-		className = encoding+className;
+		
+		String tableName = src.getName();
+		int dot = tableName.indexOf(".");
+		if (dot >= 0) tableName = tableName.substring(0,dot);
+		
+		String className = encoding+tableName;
+		
 		String pkg = args[1];
+		
 		String destFile = args[0]+File.separator+pkg.replace('.', File.separatorChar)+File.separator+className+".java";
 		    
-		ht.openFiles(in, destFile);
-		ht.putHeaders(pkg, className);
-		ht.convertTxtToHash(encoding);
-        ht.putMethods(encoding, className);
+		converter.openFiles(src, destFile);
+		converter.putHeaders(pkg, className);
+		converter.convertTxtToHash(encoding);
+        converter.putMethods(encoding, tableName);
 	}
 
 }
