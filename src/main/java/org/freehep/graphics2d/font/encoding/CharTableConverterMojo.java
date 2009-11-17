@@ -14,90 +14,96 @@ import org.codehaus.plexus.util.FileUtils;
  * @description Generates lookup tables from 16 bit Unicode text files.
  * @phase generate-sources
  * @author <a href="Mark.Donszelmann@slac.stanford.edu">Mark Donszelmann</a>
- * @version $Id: src/main/java/org/freehep/graphics2d/font/encoding/CharTableConverterMojo.java 83c4409af7b0 2005/11/19 07:52:18 duns $
+ * @version $Id:
+ *          src/main/java/org/freehep/graphics2d/font/encoding/CharTableConverterMojo
+ *          .java 83c4409af7b0 2005/11/19 07:52:18 duns $
  */
 public class CharTableConverterMojo extends AbstractMojo {
 
-    /**
-     * The target directory into which to generate the output
-     *
-     * @parameter expression="${project.build.directory}/generated-sources/encoding"
-     * @required
-     */
-    private String targetDirectory;
+	/**
+	 * The target directory into which to generate the output
+	 * 
+	 * @parameter 
+	 *            expression="${project.build.directory}/generated-sources/encoding"
+	 * @required
+	 */
+	private String targetDirectory;
 
-    /**
-     * The name of the package to be used in the generated lookup classes.
-     *
-     * @parameter expression=""
-     * @required
-     */
-    private String packageName;
+	/**
+	 * The name of the package to be used in the generated lookup classes.
+	 * 
+	 * @parameter expression=""
+	 * @required
+	 */
+	private String packageName;
 
-    /**
-     * The configuration file directory.
-     *
-     * @parameter expression="${basedir}/src/main/encoding"
-     * @required
-     */
-    private String sourceDirectory;
+	/**
+	 * The configuration file directory.
+	 * 
+	 * @parameter expression="${basedir}/src/main/encoding"
+	 * @required
+	 */
+	private String sourceDirectory;
 
-     /**
-     * The 16 bit Unicode text file.
-     *
-     * @parameter expression=""
-     * @required
-     */
-    private String source;
+	/**
+	 * The 16 bit Unicode text file.
+	 * 
+	 * @parameter expression=""
+	 * @required
+	 */
+	private String source;
 
-     /**
-     * The 16 bit Unicode text file.
-     *
-     * @parameter expression=""
-     */
-    private String encodingType = null;
+	/**
+	 * The 16 bit Unicode text file.
+	 * 
+	 * @parameter expression=""
+	 */
+	private String encodingType = null;
 
-   /**
-     * @parameter expression="${project}"
-     * @required
-     */
-    private MavenProject project;
-    
-    public void execute() throws MojoExecutionException {        
-        if (!FileUtils.fileExists(targetDirectory)) {
-            FileUtils.mkdir( targetDirectory );
-        }
+	/**
+	 * @parameter expression="${project}"
+	 * @required
+	 */
+	private MavenProject project;
 
-        try {
-            org.freehep.graphics2d.font.encoding.CharTableConverter.main(generateArgumentList());
-        } catch (Exception e) {
-            throw new MojoExecutionException( "CHarTableConverter execution failed", e );
-        }      
+	public void execute() throws MojoExecutionException {
+		if (!FileUtils.fileExists(targetDirectory)) {
+			FileUtils.mkdir(targetDirectory);
+		}
 
-        if (project != null) {
-           project.addCompileSourceRoot(targetDirectory);
-        }
-    }
+		try {
+			org.freehep.graphics2d.font.encoding.CharTableConverter
+					.main(generateArgumentList());
+		} catch (Exception e) {
+			throw new MojoExecutionException(
+					"CHarTableConverter execution failed", e);
+		}
 
+		if (project != null) {
+			project.addCompileSourceRoot(targetDirectory);
+		}
+	}
 
-    private String[] generateArgumentList() throws MojoExecutionException {
-        
-        List argList = new ArrayList();
-        
-        argList.add(targetDirectory);        
-        argList.add(packageName);
-    
-        // FIXME, check for source out-of-date
-        if (!sourceDirectory.endsWith("/")) {
-            sourceDirectory = sourceDirectory+"/";
-        }
+	private String[] generateArgumentList() throws MojoExecutionException {
 
-        argList.add(sourceDirectory+source);
-        
-        if (encodingType != null) argList.add(encodingType);
+		List argList = new ArrayList();
 
-        getLog().debug("CharTableConverter " + argList.toString());
-        
-        return (String[])argList.toArray(new String[argList.size()]);
-    }
+		argList.add(targetDirectory);
+		argList.add(packageName);
+
+		// FIXME, check for source out-of-date
+		if (!sourceDirectory.endsWith("/")) {
+			sourceDirectory = sourceDirectory + "/";
+		}
+
+		argList.add(sourceDirectory + source);
+
+		if (encodingType != null) {
+			argList.add(encodingType);
+		}
+
+		getLog().debug("CharTableConverter " + argList.toString());
+
+		return (String[]) argList.toArray(new String[argList.size()]);
+	}
 }
