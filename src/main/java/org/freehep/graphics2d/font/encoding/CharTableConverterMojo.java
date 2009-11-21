@@ -1,4 +1,4 @@
-// Copyright FreeHEP, 2005.
+// Copyright FreeHEP, 2005-2009.
 package org.freehep.graphics2d.font.encoding;
 
 import java.util.ArrayList;
@@ -86,7 +86,7 @@ public class CharTableConverterMojo extends AbstractMojo {
 
 	private String[] generateArgumentList() throws MojoExecutionException {
 
-		List argList = new ArrayList();
+		List<String> argList = new ArrayList<String>();
 
 		argList.add(targetDirectory);
 		argList.add(packageName);
@@ -104,6 +104,6 @@ public class CharTableConverterMojo extends AbstractMojo {
 
 		getLog().debug("CharTableConverter " + argList.toString());
 
-		return (String[]) argList.toArray(new String[argList.size()]);
+		return argList.toArray(new String[argList.size()]);
 	}
 }
