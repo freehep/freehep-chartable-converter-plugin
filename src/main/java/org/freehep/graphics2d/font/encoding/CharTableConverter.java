@@ -1,7 +1,16 @@
-// Copyright 2001-2005, FreeHEP.
+// Copyright 2001-2009, FreeHEP.
 package org.freehep.graphics2d.font.encoding;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.StringTokenizer;
 
 /**
@@ -10,9 +19,7 @@ import java.util.StringTokenizer;
  * encoding.unicode.txt [encoding type]
  * 
  * @author Sami Kama
- * @version $Id:
- *          src/main/java/org/freehep/graphics2d/font/encoding/CharTableConverter
- *          .java f21547d41a73 2005/12/02 00:39:35 duns $
+ * @author Mark Donszelmann
  */
 public class CharTableConverter {
 	private BufferedReader textFile = null;
@@ -24,63 +31,52 @@ public class CharTableConverter {
 		javaOut.println("//!!DO NOT EDIT");
 		javaOut.println("package " + pkg + ";");
 		javaOut.println();
-		javaOut.println("import java.util.*;");
+		javaOut.println("import java.util.HashMap;");
+		javaOut.println("import java.util.Map;");
 		javaOut.println();
 		javaOut.println("/**");
 		javaOut.println(" * Generated " + className + " Encoding Table.");
 		javaOut.println(" *");
 		javaOut
 				.println(" * @author org.freehep.graphics2d.font.CharTableConverter");
-		javaOut
-				.println(" * @version $Id: src/main/java/org/freehep/graphics2d/font/encoding/CharTableConverter.java f21547d41a73 2005/12/02 00:39:35 duns $");
 		javaOut.println(" */");
 		javaOut.println("public class " + className
 				+ " extends AbstractCharTable {");
-		javaOut.println("\tprivate Hashtable unicodeToName = new Hashtable();");
-		javaOut.println("\tprivate Hashtable nameToUnicode = new Hashtable();");
-		javaOut.println("\tprivate Hashtable nameToEnc = new Hashtable();");
+		javaOut.println("\tprivate Map<Character, String> unicodeToName = new HashMap<Character, String>();");
+		javaOut.println("\tprivate Map<String, Character> nameToUnicode = new HashMap<String, Character>();");
+		javaOut.println("\tprivate Map<String, Integer> nameToEnc = new HashMap<String, Integer>();");
 		javaOut.println("\tprivate String[] encToName = new String[256];");
 		javaOut.println("\tpublic " + className + "() {");
 	}
 
 	public void putMethods(String encoding, String tableName) throws IOException {
 
-		/*
-		 * javaOut.println("\tpublic String toName(char c){");javaOut.println(
-		 * "\t\treturn((String)(unicodeToName.get(new Character(c))));");
-		 * javaOut.println("\t}"); javaOut.println();
-		 */
 		javaOut.println("\tpublic String toName(Character c){");
-		javaOut.println("\t\treturn((String)unicodeToName.get(c));");
+		javaOut.println("\t\treturn unicodeToName.get(c);");
 		javaOut.println("\t}");
 		javaOut.println();
 		javaOut.println("\tpublic String toName(int enc){");
 		javaOut.println("\t\tif(enc!=0)");
-		javaOut.println("\t\treturn(encToName[enc]);");
-		javaOut.println("\t\treturn(null);");
+		javaOut.println("\t\treturn encToName[enc];");
+		javaOut.println("\t\treturn null;");
 		javaOut.println("\t}");
 		javaOut.println();
-		/*
-		 * javaOut.println("\tpublic String toName(Integer enc){");
-		 * javaOut.println("\t\treturn(encToName[enc.intValue()]);");
-		 * javaOut.println("\t}"); javaOut.println();
-		 */
 		javaOut.println("\tpublic int toEncoding(String name){");
 		javaOut
-				.println("\t\treturn(((Integer)(nameToEnc.get(name))).intValue());");
+				.println("\t\treturn nameToEnc.get(name).intValue();");
 		javaOut.println("\t}");
 		javaOut.println();
 		javaOut.println("\tpublic char toUnicode(String name){");
 		javaOut
-				.println("\t\treturn(((Character)(nameToUnicode.get(name))).charValue());");
+				.println("\t\treturn nameToUnicode.get(name).charValue();");
 		javaOut.println("\t}");
 		javaOut.println();
 		javaOut.println("\tpublic String getName(){");
-		javaOut.println("\treturn(\"" + tableName + "\");");
+		javaOut.println("\treturn \"" + tableName + "\";");
 		javaOut.println("\t}");
 		javaOut.println();
 		javaOut.println("\tpublic String getEncoding(){");
-		javaOut.println("\t	return(\"" + encoding + "\");");
+		javaOut.println("\t	return \"" + encoding + "\";");
 		javaOut.println("\t}");
 		javaOut.println();
 		javaOut.println("}");
